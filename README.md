@@ -1,2 +1,5 @@
 # koa4Fun
-Koa learning. For fun
+
+读一读 koa 源码。
+
+koalib 对应源码中的 lib 目录。
