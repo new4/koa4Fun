@@ -10,6 +10,7 @@ var getGeneratorFunc = function () { // eslint-disable-line consistent-return
 		return false;
 	}
 	try {
+		// 自己构造一个 generator 函数用来比较
 		return Function('return function*() {}')();
 	} catch (e) {
 	}
