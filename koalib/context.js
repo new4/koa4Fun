@@ -1,6 +1,12 @@
 
 'use strict';
 
+// --------------
+// context 维护了一个请求的上下文环境，
+// 其主要的功能是代理 request 和 response，
+// 提供了对 request 和 response 对象的便捷访问能力
+// --------------
+
 /**
  * Module dependencies.
  */
@@ -13,6 +19,7 @@ const statuses = require('statuses');
 
 /**
  * Context prototype.
+ * context 的原型对象
  */
 
 const proto = module.exports = {
@@ -44,10 +51,10 @@ const proto = module.exports = {
 
   toJSON() {
     return {
-      request: this.request.toJSON(),
-      response: this.response.toJSON(),
-      app: this.app.toJSON(),
-      originalUrl: this.originalUrl,
+      request: this.request.toJSON(), // 返回包含属性 url/method/header 的对象
+      response: this.response.toJSON(), // 返回包含属性 status/message/header 的对象
+      app: this.app.toJSON(), // 返回包含属性 subdomainOffset/proxy/env 的对象
+      originalUrl: this.originalUrl, // 即 req.url
       req: '<original node req>',
       res: '<original node res>',
       socket: '<original node socket>'
@@ -114,6 +121,7 @@ const proto = module.exports = {
     }
 
     // delegate
+    // 在 app 实例上触发 error 事件
     this.app.emit('error', err, this);
 
     // nothing we can do here other
@@ -156,29 +164,35 @@ const proto = module.exports = {
 /**
  * Response delegation.
  */
-
+// 代理 response 的属性和方法
+// method 表示代理方法
+// access 表示代理的属性可以读写
+// getter 表示代理的属性只可以读
 delegate(proto, 'response')
-  .method('attachment')
-  .method('redirect')
-  .method('remove')
-  .method('vary')
-  .method('set')
-  .method('append')
-  .method('flushHeaders')
-  .access('status')
-  .access('message')
-  .access('body')
-  .access('length')
-  .access('type')
-  .access('lastModified')
-  .access('etag')
-  .getter('headerSent')
-  .getter('writable');
+.method('attachment')
+.method('redirect')
+.method('remove')
+.method('vary')
+.method('set')
+.method('append')
+.method('flushHeaders')
+.access('status')
+.access('message')
+.access('body')
+.access('length')
+.access('type')
+.access('lastModified')
+.access('etag')
+.getter('headerSent')
+.getter('writable');
 
 /**
  * Request delegation.
  */
-
+// 代理 request 的属性和方法
+// method 表示代理方法
+// access 表示代理的属性可以读写
+// getter 表示代理的属性只可以读
 delegate(proto, 'request')
   .method('acceptsLanguages')
   .method('acceptsEncodings')
