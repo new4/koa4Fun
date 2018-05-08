@@ -23,7 +23,7 @@ module.exports = {
 
   /**
    * Return request header.
-   *
+   * 
    * @return {Object}
    * @api public
    */
@@ -34,7 +34,7 @@ module.exports = {
 
   /**
    * Set request header.
-   *
+   * 
    * @api public
    */
 

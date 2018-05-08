@@ -15,7 +15,7 @@ const context = require('./context');
 const request = require('./request');
 const statuses = require('statuses');
 const Cookies = require('cookies');
-const accepts = require('accepts');
+const accepts = require('accepts'); // 内容协商
 const Emitter = require('events');
 const assert = require('assert');
 const Stream = require('stream');
@@ -64,7 +64,7 @@ module.exports = class Application extends Emitter {
   // 创建并返回 HTTP 服务器，将给定的参数传递给 server.listen()
   listen(...args) {
     debug('listen');
-    // 将 this.callback 调用后返回的函数作为回调函数
+    // 将 this.callback 调用后返回的函数作为处理请求的回调函数
     const server = http.createServer(this.callback());
     return server.listen(...args);
   }
@@ -141,8 +141,8 @@ module.exports = class Application extends Emitter {
 
     // 回调函数，接收参数 req - 请求对象；res - 响应对象
     const handleRequest = (req, res) => {
-      const ctx = this.createContext(req, res);
-      return this.handleRequest(ctx, fn);
+      const ctx = this.createContext(req, res); // 先创建一个上下文环境 ctx
+      return this.handleRequest(ctx, fn); // 随后在 ctx 上执行一系列中间件
     };
 
     return handleRequest;
@@ -153,7 +153,7 @@ module.exports = class Application extends Emitter {
    *
    * @api private
    */
-
+  // 处理请求
   handleRequest(ctx, fnMiddleware) {
     const res = ctx.res;
     res.statusCode = 404; // 状态码初始默认 404
@@ -168,7 +168,7 @@ module.exports = class Application extends Emitter {
    *
    * @api private
    */
-
+  // 通过 req 和 res 来创建一个新的 context
   createContext(req, res) {
     // 原型式继承
     const context = Object.create(this.context);
@@ -221,24 +221,29 @@ module.exports = class Application extends Emitter {
 
 function respond(ctx) {
   // allow bypassing koa
+  // 可以自定义 ctx.respond
   if (false === ctx.respond) return;
 
   const res = ctx.res;
-  if (!ctx.writable) return;
+  if (!ctx.writable) return; // 其实是 res.writable
 
   let body = ctx.body;
   const code = ctx.status;
 
   // ignore body
+  // 204/205/304 表示只需要知道请求是成功的，不需要返回的实体里的数据
   if (statuses.empty[code]) {
     // strip headers
     ctx.body = null;
     return res.end();
   }
 
+  // 针对请求资源首部信息的情形，计算 body 字节长赋值给 res.length
   if ('HEAD' == ctx.method) {
+    // res.headersSent 返回一个布尔值，如果响应头已被发送则为 true，否则为 false
     if (!res.headersSent && isJSON(body)) {
-      ctx.length = Buffer.byteLength(JSON.stringify(body));
+      // 事实上是设置 res.length
+      ctx.length = Buffer.byteLength(JSON.stringify(body)); 
     }
     return res.end();
   }
