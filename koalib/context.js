@@ -97,6 +97,10 @@ const proto = module.exports = {
    */
 
   throw(...args) {
+    // createError([status], [message], [properties])
+    // status: 数字，状态码
+    // message - 错误信息，字符串
+    // properties - 自定义属性
     throw createError(...args);
   },
 

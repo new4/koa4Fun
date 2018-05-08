@@ -505,6 +505,7 @@ module.exports = {
    */
 
   accepts(...args) {
+    // application.js 中定义了 context.accept = request.accept = accepts(req);
     return this.accept.types(...args);
   },
 

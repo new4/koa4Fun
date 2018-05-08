@@ -189,7 +189,7 @@ module.exports = class Application extends Emitter {
       secure: request.secure
     });
     request.ip = request.ips[0] || req.socket.remoteAddress || '';
-    context.accept = request.accept = accepts(req);
+    context.accept = request.accept = accepts(req); // 提供内容协商
     context.state = {};
     return context;
   }
