@@ -136,7 +136,7 @@ module.exports = class Application extends Emitter {
     // 先组合中间件，组合之后返回一个函数 fn，fn 返回 Promise
     const fn = compose(this.middleware); 
 
-    // 没有注册监听 error 事件的处理函数时，帮忙注册一个处理函数 this.onerror
+    // app 没有注册监听 error 事件的处理函数时，帮忙注册一个处理函数 this.onerror
     if (!this.listeners('error').length) this.on('error', this.onerror);
 
     // 回调函数，接收参数 req - 请求对象；res - 响应对象
@@ -157,7 +157,7 @@ module.exports = class Application extends Emitter {
   handleRequest(ctx, fnMiddleware) {
     const res = ctx.res;
     res.statusCode = 404; // 状态码初始默认 404
-    const onerror = err => ctx.onerror(err); // 处理中间件出错情形
+    const onerror = err => ctx.onerror(err); // 处理中间件出错的情形，可以改写 ctx.onerror
     const handleResponse = () => respond(ctx); // 处理完所有中间件之后调用
     onFinished(res, onerror);
     return fnMiddleware(ctx).then(handleResponse).catch(onerror);
@@ -196,7 +196,7 @@ module.exports = class Application extends Emitter {
 
   /**
    * Default error handler.
-   *
+   * 
    * @param {Error} err
    * @api private
    */

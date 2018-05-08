@@ -546,7 +546,8 @@ module.exports = {
    * Checks if the request is writable.
    * Tests for the existence of the socket
    * as node sometimes does not set it.
-   *
+   * 检查请求是否可写了
+   * 
    * @return {Boolean}
    * @api private
    */
@@ -559,6 +560,7 @@ module.exports = {
     // There are already pending outgoing res, but still writable
     // https://github.com/nodejs/node/blob/v4.4.7/lib/_http_server.js#L486
     if (!socket) return true;
+    // http://nodejs.cn/api/net.html#net_class_net_socket
     return socket.writable;
   },
 

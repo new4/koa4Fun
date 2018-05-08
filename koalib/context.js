@@ -106,7 +106,8 @@ const proto = module.exports = {
 
   /**
    * Default error handling.
-   *
+   * 默认的错误处理方法。任意中间件抛出错误都会被本方法捕获并处理。
+   * 
    * @param {Error} err
    * @api private
    */
@@ -128,9 +129,7 @@ const proto = module.exports = {
     // 在 app 实例上触发 error 事件
     this.app.emit('error', err, this);
 
-    // nothing we can do here other
-    // than delegate to the app-level
-    // handler and log.
+    // nothing we can do here other than delegate to the app-level handler and log.
     if (headerSent) {
       return;
     }
@@ -138,6 +137,7 @@ const proto = module.exports = {
     const { res } = this;
 
     // first unset all headers
+    // 先移除所有的响应头
     if (typeof res.getHeaderNames === 'function') {
       res.getHeaderNames().forEach(name => res.removeHeader(name));
     } else {
@@ -145,6 +145,7 @@ const proto = module.exports = {
     }
 
     // then set those specified
+    // 可以通过传入 err.headers 来指定设置哪些头
     this.set(err.headers);
 
     // force text/plain
