@@ -23,6 +23,7 @@ module.exports = {
 
   /**
    * Return request header.
+   * 获取请求头
    * 
    * @return {Object}
    * @api public
@@ -34,6 +35,7 @@ module.exports = {
 
   /**
    * Set request header.
+   * 设置请求头
    * 
    * @api public
    */
@@ -44,7 +46,7 @@ module.exports = {
 
   /**
    * Return request header, alias as request.header
-   *
+   * 
    * @return {Object}
    * @api public
    */
@@ -55,7 +57,7 @@ module.exports = {
 
   /**
    * Set request header, alias as request.header
-   *
+   * 
    * @api public
    */
 
@@ -65,17 +67,19 @@ module.exports = {
 
   /**
    * Get request URL.
-   *
+   * 获取请求 url
+   * 
    * @return {String}
    * @api public
    */
-
+  
   get url() {
     return this.req.url;
   },
-
+  
   /**
    * Set request URL.
+   * 设置请求 url
    *
    * @api public
    */
@@ -86,7 +90,8 @@ module.exports = {
 
   /**
    * Get origin of URL.
-   *
+   * 获取请求来源站点
+   * 
    * @return {String}
    * @api public
    */
@@ -97,7 +102,8 @@ module.exports = {
 
   /**
    * Get full request URL.
-   *
+   * 获取完整的请求 url
+   * 
    * @return {String}
    * @api public
    */
@@ -110,6 +116,7 @@ module.exports = {
 
   /**
    * Get request method.
+   * 获取请求方法
    *
    * @return {String}
    * @api public
@@ -121,6 +128,7 @@ module.exports = {
 
   /**
    * Set request method.
+   * 设置请求方法
    *
    * @param {String} val
    * @api public
@@ -608,7 +616,8 @@ module.exports = {
 
   /**
    * Return request header.
-   *
+   * 获取某一请求头对应的值
+   * 
    * The `Referrer` header field is special-cased,
    * both `Referrer` and `Referer` are interchangeable.
    *
